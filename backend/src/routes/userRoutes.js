@@ -90,4 +90,19 @@ router.post("/login", async (req, res) => {
     }
 });
 
+router.get("/allusers", async (req, res) => {
+    try {
+        // Fetch all users but EXCLUDE password
+        const users = await userSchema.find().select("-password");
+
+        return res.status(200).json({
+            message: "All users fetched successfully",
+            users,
+        });
+    } catch (err) {
+        console.error("Get all users error:", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 export default router;

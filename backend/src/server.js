@@ -57,6 +57,27 @@ app.post("/api/addbrand", async (req, res) => {
 
 
 
+import User from "./models/User.js";
+import Product from "./models/product.js";
+
+// GET /api/stats
+app.get("/api/stats", async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalProducts = await Product.countDocuments();
+    const totalOrders = 0; // Mock for now
+
+    res.status(200).json({
+      totalUsers,
+      totalProducts,
+      totalOrders
+    });
+  } catch (err) {
+    console.error("Stats error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // ----------------------- SERVER -----------------------
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
