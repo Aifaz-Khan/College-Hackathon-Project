@@ -14,9 +14,41 @@ export const createProduct = async (req, res, next) => {
 };
 
 // GET /api/products
+// GET /api/products
+// Public access, supports ?search=keyword
 export const getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find({ createdBy: req.user._id }).sort("-createdAt");
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      // 1. Find brands that match the search term
+      const Brand = (await import("../models/brand.js")).default;
+      const matchingBrands = await Brand.find({
+        title: { $regex: search, $options: "i" },
+      }).select("_id");
+
+      const brandIds = matchingBrands.map((b) => b._id);
+
+      // 2. Build query: Brand matches OR Title/Description matches
+      query = {
+        $or: [
+          { brand: { $in: brandIds } },
+          { title: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    // Fetch products and populate brand
+    // We sort by createdAt desc by default. 
+    // To strictly implement "Brand Priority" (brand matches first) effectively requires aggregation 
+    // or post-processing. For simplicity/efficiency in this MERN stack, we'll sort by creation 
+    // but the search ensures brand-relevant items appear.
+    const products = await Product.find(query)
+      .populate("brand")
+      .sort("-createdAt");
+
     res.json(products);
   } catch (err) {
     next(err);

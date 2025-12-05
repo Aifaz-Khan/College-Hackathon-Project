@@ -9,9 +9,11 @@ import {
 
 const router = express.Router();
 
-router.route("/")
-  .get(getProducts)
-  .post(createProduct);
+// Public route
+router.route("/").get(getProducts);
+
+// Protected routes
+router.route("/").post(protect, createProduct);
 
 router.route("/:id")
   .put(updateProduct)
