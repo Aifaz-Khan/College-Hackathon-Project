@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axiosClient from "../../api/axiosClient";
 
 const AdminProducts = () => {
@@ -14,7 +15,7 @@ const AdminProducts = () => {
         try {
             // Re-using the public products API for now
             const { data } = await axiosClient.get("/api/products");
-            setProducts(data);
+            setProducts(data.products || []);
         } catch (err) {
             console.error(err);
         } finally {
@@ -26,7 +27,7 @@ const AdminProducts = () => {
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
                 <h2>Manage Products</h2>
-                <button className="btn btn-primary">Add Product</button>
+                <Link to="/admin/add-product" className="btn btn-primary" style={{ textDecoration: "none" }}>Add Product</Link>
             </div>
 
             {loading ? (
@@ -51,7 +52,19 @@ const AdminProducts = () => {
                                     <td style={{ padding: "1rem" }}>${product.price}</td>
                                     <td style={{ padding: "1rem" }}>{product.stock}</td>
                                     <td style={{ padding: "1rem" }}>
-                                        <button className="btn btn-outline" style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", marginRight: "0.5rem" }}>Edit</button>
+                                        <Link
+                                            to={`/admin/edit-product/${product._id}`}
+                                            className="btn btn-outline"
+                                            style={{
+                                                padding: "0.25rem 0.5rem",
+                                                fontSize: "0.8rem",
+                                                marginRight: "0.5rem",
+                                                textDecoration: "none",
+                                                display: "inline-block"
+                                            }}
+                                        >
+                                            Edit
+                                        </Link>
                                         <button className="btn btn-outline" style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", borderColor: "red", color: "red" }}>Delete</button>
                                     </td>
                                 </tr>

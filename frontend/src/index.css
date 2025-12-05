@@ -29,7 +29,9 @@ body {
   flex-direction: column;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 700;
   margin-bottom: 0.5em;
 }
@@ -158,19 +160,53 @@ a:hover {
 
 /* Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* Product Grid */
+/* Product Grid - Updated to Flex */
 .product-grid {
-  display: grid;
-  gridTemplateColumns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  /* Center items if they don't fill the row */
+}
+
+/* Product Card - Smaller width */
+/* Assuming ProductCard component has a class or style applied, 
+   but previously it was relying on grid to size it. 
+   Now we enforce a width. */
+.product-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 250px;
+  /* Specific smaller width as requested */
+  flex: 0 0 auto;
+  /* Don't grow/shrink unexpectedly */
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--primary-color);
 }
 
 /* Cart Styles */
@@ -187,7 +223,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cart-item-info {
@@ -212,7 +248,7 @@ a:hover {
 .cart-summary {
   margin-top: 2rem;
   text-align: right;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 1rem;
 }
 
@@ -228,11 +264,11 @@ a:hover {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .auth-container {
     padding: 1rem;
   }
-  
+
   .auth-box {
     padding: 1.5rem;
   }
@@ -242,20 +278,21 @@ a:hover {
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .cart-item-info {
     width: 100%;
   }
-  
+
   .cart-item-actions {
     width: 100%;
     justify-content: space-between;
     padding-top: 0.5rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .product-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
+    /* Single column on mobile */
     gap: 1.5rem;
   }
 }

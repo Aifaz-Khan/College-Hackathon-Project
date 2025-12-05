@@ -11,7 +11,7 @@ const Home = () => {
         setLoading(true);
         try {
             const { data } = await axiosClient.get(`/api/products?search=${searchTerm}`);
-            setProducts(data);
+            setProducts(data.products || []);
         } catch (err) {
             console.error(err);
         } finally {
