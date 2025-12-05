@@ -1,31 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-// Simple Home Page Component
-const Home = () => {
-  return (
-    <div className="auth-container" style={{ flexDirection: 'column', textAlign: 'center' }}>
-      <h1>Welcome to the Hackathon Project!</h1>
-      <p style={{ maxWidth: '600px', margin: '0 auto', color: '#94a3b8' }}>
-        This is a premium-styled application built with React and Node.js.
-        <br />
-        Please login or register to continue.
-      </p>
-    </div>
-  );
-};
+import Home from "./pages/Home";
+import Cart from "./pages/Cart";
+import AdminLayout from "./layouts/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import AdminUsers from "./pages/admin/Users";
 
 function App() {
   return (
+
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <CartProvider>
+        <Routes>
+          {/* Public Routes with Navbar */}
+          <Route path="/" element={<><Navbar /><Home /></>} />
+          <Route path="/cart" element={<><Navbar /><Cart /></>} />
+          <Route path="/login" element={<><Navbar /><Login /></>} />
+          <Route path="/register" element={<><Navbar /><Register /></>} />
+
+          {/* Admin Routes (Sidebar Layout) */}
+          <Route path="/admin" element={<AdminLayout />}>
+            {/* Redirect /admin to /admin/dashboard */}
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
+        </Routes>
+      </CartProvider>
     </Router>
   );
 }

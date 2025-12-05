@@ -1,0 +1,67 @@
+import { useState, useEffect } from "react";
+import axiosClient from "../../api/axiosClient";
+
+const AdminProducts = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            // Re-using the public products API for now
+            const { data } = await axiosClient.get("/api/products");
+            setProducts(data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+                <h2>Manage Products</h2>
+                <button className="btn btn-primary">Add Product</button>
+            </div>
+
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", color: "#e2e8f0" }}>
+                        <thead>
+                            <tr style={{ textAlign: "left", background: "#1e293b" }}>
+                                <th style={{ padding: "1rem" }}>Title</th>
+                                <th style={{ padding: "1rem" }}>Brand</th>
+                                <th style={{ padding: "1rem" }}>Price</th>
+                                <th style={{ padding: "1rem" }}>Stock</th>
+                                <th style={{ padding: "1rem" }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.map((product) => (
+                                <tr key={product._id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                                    <td style={{ padding: "1rem" }}>{product.title}</td>
+                                    <td style={{ padding: "1rem" }}>{product.brand?.title || "N/A"}</td>
+                                    <td style={{ padding: "1rem" }}>${product.price}</td>
+                                    <td style={{ padding: "1rem" }}>{product.stock}</td>
+                                    <td style={{ padding: "1rem" }}>
+                                        <button className="btn btn-outline" style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", marginRight: "0.5rem" }}>Edit</button>
+                                        <button className="btn btn-outline" style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", borderColor: "red", color: "red" }}>Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default AdminProducts;

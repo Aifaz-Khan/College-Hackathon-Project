@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
 
@@ -6,7 +6,12 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [formAppear, setFormAppear] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setFormAppear(true);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
