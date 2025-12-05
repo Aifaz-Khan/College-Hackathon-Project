@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import itemRoutes from "./routes/itemRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 import { errorHandler } from "./middleware/errorHandler.js";
 //Api Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/items", itemRoutes);
+app.use("/api/products", productRoutes);
 app.use(errorHandler);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
