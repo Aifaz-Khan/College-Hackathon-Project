@@ -1,27 +1,38 @@
-import { useEffect, useState } from "react";
-import axiosClient from "./api/axiosClient";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Cart from "./pages/Cart";
+import AdminLayout from "./layouts/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import AdminUsers from "./pages/admin/Users";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const res = await axiosClient.get("/");
-        setMessage(res.data.message);
-      } catch (err) {
-        console.error(err);
-        setMessage("Error connecting to backend");
-      }
-    };
-    fetchApi();
-  }, []);
-
   return (
-    <div>
-      <h1>MERN Hackathon Starter</h1>
-      <p>Backend says: {message}</p>
-    </div>
+
+    <Router>
+      <CartProvider>
+        <Routes>
+          {/* Public Routes with Navbar */}
+          <Route path="/" element={<><Navbar /><Home /></>} />
+          <Route path="/cart" element={<><Navbar /><Cart /></>} />
+          <Route path="/login" element={<><Navbar /><Login /></>} />
+          <Route path="/register" element={<><Navbar /><Register /></>} />
+
+          {/* Admin Routes (Sidebar Layout) */}
+          <Route path="/admin" element={<AdminLayout />}>
+            {/* Redirect /admin to /admin/dashboard */}
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
+        </Routes>
+      </CartProvider>
+    </Router>
   );
 }
 
