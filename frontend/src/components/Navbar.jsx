@@ -22,14 +22,24 @@ const Navbar = () => {
             </div>
             <div className="nav-links">
                 {userInfo ? (
-                    <>
-                        <span style={{ alignSelf: "center", color: "#94a3b8" }}>
-                            {userInfo.name}
-                        </span>
-                        <button onClick={handleLogout} className="btn btn-outline">
-                            Logout
-                        </button>
-                    </>
+                    <Link to="/profile" style={{ textDecoration: "none" }}>
+                        <div style={{
+                            width: "40px",
+                            height: "40px",
+                            background: "linear-gradient(135deg, var(--primary-color), var(--accent-color))",
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "1rem",
+                            fontWeight: "bold",
+                            color: "white",
+                            cursor: "pointer",
+                            title: userInfo.name
+                        }}>
+                            {userInfo.name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2)}
+                        </div>
+                    </Link>
                 ) : (
                     <>
                         <Link to="/login" className="btn">

@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
+import Profile from "./pages/Profile";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
@@ -19,6 +20,7 @@ function App() {
           {/* Public Routes with Navbar */}
           <Route path="/" element={<><Navbar /><Home /></>} />
           <Route path="/cart" element={<><Navbar /><Cart /></>} />
+          <Route path="/profile" element={<><Navbar /><Profile /></>} />
           <Route path="/login" element={<><Navbar /><Login /></>} />
           <Route path="/register" element={<><Navbar /><Register /></>} />
 
