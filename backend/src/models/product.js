@@ -4,8 +4,7 @@ const productSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: String,
-    status: { type: String, default: "open" },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    status: { type: String, default: "true" },
     price: { type: Number, required: true },
     category: { type: String, required: true },
     images: { type: Array, required: true },
