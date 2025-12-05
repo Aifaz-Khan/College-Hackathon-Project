@@ -23,6 +23,19 @@ const AdminProducts = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            try {
+                await axiosClient.delete(`/api/deleteproduct/${id}`);
+                // Remove from state immediately to update UI without re-fetch
+                setProducts(products.filter(p => p._id !== id));
+            } catch (err) {
+                console.error("Delete failed", err);
+                alert("Failed to delete product");
+            }
+        }
+    };
+
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
@@ -65,7 +78,13 @@ const AdminProducts = () => {
                                         >
                                             Edit
                                         </Link>
-                                        <button className="btn btn-outline" style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", borderColor: "red", color: "red" }}>Delete</button>
+                                        <button
+                                            onClick={() => handleDelete(product._id)}
+                                            className="btn btn-outline"
+                                            style={{ padding: "0.25rem 0.5rem", fontSize: "0.8rem", borderColor: "red", color: "red" }}
+                                        >
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
